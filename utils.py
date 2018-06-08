@@ -1,6 +1,8 @@
 import requests
 from urllib import urlencode
 
+from batpay.exceptions import RequestError
+
 
 class RESTConsumer(object):
 
@@ -10,7 +12,7 @@ class RESTConsumer(object):
     
     #region Public Methods
     @classmethod
-    def post_request(cls, uri, params, json_body, **kwargs):
+    def post_request(cls, uri, json_body, params="", **kwargs):
         _uri = cls.HOST + uri
         _response = requests.post(
             _uri, 
@@ -22,10 +24,10 @@ class RESTConsumer(object):
         if _response.status_code == 201:
             return _response
         else:
-            raise ValueError()
+            raise RequestError()
 
     @classmethod
-    def put_request(cls, uri, params, codigo, json_body, **kwargs):
+    def put_request(cls, uri, codigo, json_body, params="", **kwargs):
         _uri = cls.HOST + uri + "/" + codigo
         _response = requests.put(
             _uri, 
@@ -37,37 +39,37 @@ class RESTConsumer(object):
         if _response.status_code == 200:
             return _response
         else:
-            raise ValueError()
+            raise RequestError()
 
     @classmethod
-    def delete_request(cls, uri, params, codigo, **kwargs):
+    def delete_request(cls, uri, codigo, params="", **kwargs):
         _uri = cls.HOST + uri + "/" + codigo
         _response = requests.delete(_uri, params=urlencode(params), **kwargs)
 
         if _response.status_code == 200:
             return _response
         else:
-            raise ValueError()
+            raise RequestError()
 
     @classmethod
-    def get_all_request(cls, uri, params, **kwargs):
+    def get_all_request(cls, uri, params="", **kwargs):
         _uri = cls.HOST + uri
         _response = requests.get(_uri, params=urlencode(params), **kwargs)
 
         if _response.status_code == 200:
             return _response
         else:
-            raise ValueError()
+            raise RequestError()
 
     @classmethod
-    def get_request(cls, uri, params, codigo, **kwargs):
+    def get_request(cls, uri, codigo, params="", **kwargs):
         _uri = cls.HOST + uri + "/" + codigo
         _response = requests.get(_uri, params=urlencode(params), **kwargs)
 
         if _response.status_code == 200:
             return _response
         else:
-            raise ValueError()
+            raise RequestError()
     #endregion
 
 class OAuth2(object):
