@@ -1,12 +1,14 @@
 from json import dumps, loads
+
 from batpay.utils import RESTConsumer
+from batpay.exceptions import RequestError
 
 
 class ModelUser(RESTConsumer):
     
     #region Constructor
     def __init__(self, **kwargs):
-        self._id = kwargs.get("id")
+        self._id = kwargs.get("id", None)
         self._first_name = kwargs.get("first_name")
         self._last_name = kwargs.get("last_name")
         self._email = kwargs.get("email")
@@ -113,6 +115,7 @@ class ModelUser(RESTConsumer):
             "/get_current_user",
             identity
         )
+
         _user = loads(_request.body)
         _user = cls(**_user)
         return _user
@@ -125,7 +128,7 @@ class ModelFriend(RESTConsumer):
 
     #region Constructor
     def __init__(self, **kwargs):
-        self._id = kwargs.get("id")
+        self._id = kwargs.get("id", None)
         self._first_name = kwargs.get("first_name")
         self._last_name = kwargs.get("last_name")
         self._email = kwargs.get("email")
@@ -164,6 +167,7 @@ class ModelFriend(RESTConsumer):
         return self._updated_at
     def picture(self):
         return self._picture
+    #endregion
 
     #region Setters
     @id.setter
@@ -198,19 +202,22 @@ class ModelFriend(RESTConsumer):
     #region Public Methods
     def add(self):
         _json = dumps(self.__dict__)
+
         _request = self.post_request(
-            "/get_current_user",
+            "/create_friend",
             _json
         )
+
         _user = loads(_request.body)
         _user = self(**_user)
         return _user
         
     def delete(self, identity):
         _request = self.delete_request(
-            "/get_current_user",
+            "/delete_friend",
             identity
         )
+
         return True
 
     @classmethod
@@ -218,15 +225,17 @@ class ModelFriend(RESTConsumer):
         _request = cls.get_all_request()
             "/get_friends"
         )
+
         _friends = loads(_request.body)
         return _friends
 
     @classmethod
     def get(cls, identity):
         _request = cls.get_request(
-            "/get_current_user",
+            "/get_friend",
             identity
         )
+
         _friend = loads(_request.body)
         _friend = cls(**_friend)
         return _friend
@@ -236,7 +245,7 @@ class ModelExpense(RESTConsumer):
 
     #region Constructor
     def __init__(self, **kwargs):
-        self._id = kwargs.get("id")
+        self._id = kwargs.get("id", None)
         self._group_id = kwargs.get("group_id")
         self._friendship_id = kwargs.get("friendship_id")
         self._expense_bundle_id = kwargs.get("expense_bundle_id")
@@ -357,43 +366,100 @@ class ModelExpense(RESTConsumer):
     #endregion
 
     #region Public Methods
-    def add(self):
+    def save(self):
+        try:
+
+            if self.id:
+                if self.get(self.id):
+                    self._update()
+                else:
+                    # TODO: Map this error in the view
+                    raise KeyError()
+            else:
+                self._add()
+
+            _expense_attr = loads(_request.body)
+            _expense = self(**_expense_attr)
+            return True
+
+        except RequestError:
+            return False
+
+    def delete(self):
+        try:
+
+            _request = self.delete_request(
+                "/get_current_user",
+                self.identity
+            )
+
+            return True
+
+        except RequestError:
+            return False
+
+    @classmethod
+    def get_all(cls):
+        try:
+
+            _expenses = []
+
+            _request = cls.get_all_request()
+                "/get_friends",
+                
+            )
+
+            _expenses_attr = loads(_request.body)
+            for _expense_attr in _expenses_attr:
+                _expenses.append(cls(**_expenses_attr))
+
+            return _expenses
+
+        except RequestError:
+            return []
+
+    @classmethod
+    def get(cls, identity):
+        try:
+
+            _request = cls.get_request(
+                "/get_current_user",
+                identity
+            )
+
+            _expense = loads(_request.body)
+            _expense = cls(_expense**)
+            return _expense
+
+        except RequestError:
+            return None
+    #endregion
+
+    #region Private Methods
+    def _add(self):
         _json = dumps(self.__dict__)
+
         _request = self.post_request(
             "/get_current_user",
             _json
         )
+
         _expense_attr = loads(_request.body)
         _expense = self(**_expense_attr)
         return _expense
-        
-    def delete(self):
-        _request = self.delete_request(
-            "/get_current_user",
-            self.identity
-        )
-        return True
 
-    @classmethod
-    def get_all(cls):
-        _expenses = []
-        _request = cls.get_all_request()
-            "/get_friends",
-            
-        )
-        _expenses_attr = loads(_request.body)
-        for _expense_attr in _expenses_attr:
-            _expenses.append(cls(**_expenses_attr))
-        return _expenses
+    def _update(self):
+        _json = dumps(self.__dict__)
+        _codigo = self.id
 
-    @classmethod
-    def get(cls, identity):
-        _request = cls.get_request(
-            "/get_current_user",
-            identity
+        _request = self.put_request(
+            "/update_expense",
+            _codigo, 
+            _json
         )
-        _expense = loads(_request.body)
-        _expense = cls(_expense**)
+
+        _expense_attr = loads(_request.body)
+        _expense = self(**_expense_attr)
         return _expense
     #endregion
 
