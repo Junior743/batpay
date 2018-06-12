@@ -4,19 +4,20 @@ from wsgiref.simple_server import make_server
 
 class BatPay(object):
     '''
-    BAT PAY - Aplicação de gerenciamento de recursos
+    BAT PAY - Application for management of apportionments.
     '''
 
     ROTAS = [
-        {"nome":"usuarios", "uri":"/usuarios"}, 
-        {"nome":"usuario", "uri":"/usuarios/{codigo}"}, 
-        {"nome":"planilhas", "uri":"/planilhas"}, 
-        {"nome":"planilha", "uri":"/planilha/{codigo}"}, 
-        {"nome":"relatorios", "uri":"/relatorios"}, 
-        {"nome":"relatorio", "uri":"/relatorio/{codigo}"}, 
-        {"nome":"relatorios_detalhados", "uri":"/relatorios/{codigo}/detalhados"}
+        {"nome":"authentication", "uri":"/authentication"}, 
+        {"nome":"users", "uri":"/users"}, 
+        {"nome":"user", "uri":"/users/{code}"}, 
+        {"nome":"spreadsheets", "uri":"/spreadsheets"}, 
+        {"nome":"spreadsheet", "uri":"/spreadsheets/{code}"}, 
+        {"nome":"reports", "uri":"/reports"}, 
+        {"nome":"report", "uri":"/reports/{code}"}, 
+        {"nome":"detailed-reports", "uri":"/reports/{code}/detailed-reports"}
     ]
-    
+
     @classmethod
     def servir(cls):
         with Configurator() as config:
