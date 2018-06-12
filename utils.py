@@ -71,6 +71,3 @@ class RESTConsumer(object):
         else:
             raise RequestError()
     #endregion
-
-class OAuth2(object):
-    pass

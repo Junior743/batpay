@@ -1,12 +1,15 @@
-from utils import ConsumidorREST
+from batpay.oath import OAuth
+from batpay.utils import ConsumidorREST
 
+
+class ControllerAuthorization(object):
+
+    #region Built-in
+    def __call__(self):
+        OAuth.authorize()
+    #endregion
 
 class ControllerExcel(object):
-
-    #region Construtor
-    def __init__(self):
-        pass
-    #endregion
 
     #region Metodos Publicos
     def distribuir_contas(self):
@@ -14,11 +17,6 @@ class ControllerExcel(object):
     #endregion
 
 class ControllerPDF(object):
-
-    #region Construtor
-    def __init__(self):
-        pass
-    #endregion
 
     #region Metodos Publicos
     def distribuir_contas(self):
