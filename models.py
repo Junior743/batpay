@@ -222,7 +222,7 @@ class ModelFriend(RESTConsumer):
 
     @classmethod
     def get_all(cls):
-        _request = cls.get_all_request()
+        _request = cls.get_all_request(
             "/get_friends"
         )
 
