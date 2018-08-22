@@ -1,80 +1,61 @@
 from pyramid.view import view_config
 from pyramid.response import Response
 
+from oauth2 import view_authenticate
+
 
 class ViewBase(object):
     pass
 
-class ViewAdministrador(ViewBase):
+class ViewAdministrator(ViewBase):
 
-    @classmethod
-    @view_config(
-        route_name="relatorios", 
-        request_method="GET", 
-        permission="pegar_moradores"
-    )
-    def extrair_relatorio(cls, request):
-        return Response("Hello %(name)s!" % request.matchdict)
+    # @view_config(
+    #     route_name="reports", 
+    #     request_method="GET", 
+    #     renderer="json"
+    # )
+    @staticmethod
+    @view_authenticate
+    def extract_reports(context, request, sessao):
+        import ipdb; ipdb.set_trace()
+        _result = sessao.get("https://secure.splitwise.com/api/v3.0/get_groups")
+        return Response("Hello")
 
-    @classmethod
-    @view_config(
-        route_name="relatorios_detalhados", 
-        request_method="GET", 
-        permission="pegar_moradores"
-    )
-    def extrair_relatorios_detalhados(cls, request):
+    @staticmethod
+    @view_authenticate
+    def extract_detailed_reports(context, request, sessao):
         '''
         Responsavel por extrair relatorios mais detalhados, com:
             itens
             valores
             envolvidos
         '''
-        return Response("Hello %(name)s!" % request.matchdict)
+        return Response("Hello")
 
-    @classmethod
-    @view_config(
-        route_name="planilhas", 
-        request_method="GET", 
-        permission="pegar_moradores"
-    )
-    def extrair_planilhas(cls, request):
-        return Response("Hello %(name)s!" % request.matchdict)
+    @staticmethod
+    @view_authenticate
+    def extract_spreadsheets(context, request, sessao):
+        return Response("Hello")
 
-class ViewGerenciador(ViewBase):
+class ViewManager(ViewBase):
 
-    @classmethod
-    @view_config(
-        route_name="moradores", 
-        request_method="POST", 
-        permission="adicionar_morador"
-    )
-    def adicionar_moradores(cls, request):
+    @staticmethod
+    @view_authenticate
+    def add_users(context, request, sessao):
         # TODO: HTML responsepegar_moradores
-        return Response("Hello %(name)s!" % request.matchdict)
+        return Response("Hello")
 
-    @classmethod
-    @view_config(
-        route_name="morador", 
-        request_method="PUT", 
-        permission="atualizar_moradores"
-    )
-    def atualizar_moradores(cls, request):
-        return Response("Hello %(name)s!" % request.matchdict)
+    @staticmethod
+    @view_authenticate
+    def update_users(context, request, sessao):
+        return Response("Hello")
 
-    @classmethod
-    @view_config(
-        route_name="morador", 
-        request_method="DELETE", 
-        permission="excluir_moradores"
-    )
-    def excluir_moradores(cls, request):
-        return Response("Hello %(name)s!" % request.matchdict)
+    @staticmethod
+    @view_authenticate
+    def delete_users(context, request, sessao):
+        return Response("Hello")
         
-    @classmethod
-    @view_config(
-        route_name="moradores", 
-        request_method="GET", 
-        permission="pegar_moradores"
-    )
-    def pegar_moradores(cls, request):
-        return Response("Hello %(name)s!" % request.matchdict)
+    @staticmethod
+    @view_authenticate
+    def get_users(context, request, sessao):
+        return Response("Hello")
