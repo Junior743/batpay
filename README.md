@@ -1,2 +1,2 @@
 # BatPay
-## Application for management of apportionments.
+## Application for management of apportionments on splitwise.
