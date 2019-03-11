@@ -1,6 +1,6 @@
 import requests
 from requests_oauthlib import OAuth2Session
-from oauthlib.oauth2 import MobileApplicationClient
+from oauthlib.oauth2 import BackendApplicationClient
 
 
 class OAuth2(object):
@@ -12,8 +12,10 @@ class OAuth2(object):
     #region Constants
     # TODO: This configurations should are in __init__ file
     CLIENT_ID = '2IFtKvuwi5MMhHqwCr4rFocDPc4tfoR2pSzXqait'
+    CLIENT_SECRET = 'AAzHaABGKBBkGRPMg9jOFqoudLvNPq14GUNLXQMN'
     SCOPES = []
-    AUTH_URL = 'https://secure.splitwise.com/oauth/authorize'
+    AUTH_URI = 'https://secure.splitwise.com/oauth/authorize'
+    TOKEN_URI = 'https://secure.splitwise.com/oauth/token'
     #endregion
     
     @classmethod
@@ -21,11 +23,21 @@ class OAuth2(object):
         '''
         Method responsible for authorize the application
         '''
-        import ipdb; ipdb.set_trace()
-        _oauth = OAuth2Session(client=MobileApplicationClient(client_id=cls.CLIENT_ID), scope=cls.SCOPES)
-        _authorization_url, _state = _oauth.authorization_url(cls.AUTH_URL)
+        _client = BackendApplicationClient(client_id=cls.CLIENT_ID)
+        _oauth = OAuth2Session(client=_client, scope=cls.SCOPES)
+        _token = _oauth.fetch_token(token_url=cls.TOKEN_URI, client_id=cls.CLIENT_ID, client_secret=cls.CLIENT_SECRET)
 
-        _session = requests.Session()
-        _session = _session.get(_authorization_url)
+        _session = _oauth
 
         return _session
+
+
+#region Decorators
+def view_authenticate(func):
+    def func_wrapper(*param):
+        _context = param[0]
+        _request = param[1]
+        _session = OAuth2.authorize()
+        return func(_context, _request, _session)
+    return func_wrapper
+#endregion
