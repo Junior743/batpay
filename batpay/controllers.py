@@ -1,6 +1,6 @@
-from oauth2 import OAuth2
-from utils import RESTConsumer
-from oauth2 import authenticate
+from batpay.oauth2 import OAuth2
+from batpay.utils import RESTConsumer
+from batpay.oauth2 import authenticate
 
 
 class ControllerAuthorization(object):
@@ -14,7 +14,7 @@ class ControllerExcel(object):
 
     #region Metodos Publicos
     @staticmethod
-    def distribuir_contas(sessao):
+    def distribuir_contas(session):
         pass
     #endregion
 
@@ -22,6 +22,6 @@ class ControllerPDF(object):
 
     #region Metodos Publicos
     @staticmethod
-    def distribuir_contas(sessao):
+    def distribuir_contas(session):
         pass
     #endregion

@@ -1,0 +1,8 @@
+map_relatories
+
+- Despesas detalhadas por pessoa:
+    - Para cada pessoa (repetir):
+        - Pegar todas as despesas que a pessoa lançou 
+            (despesas que ela participa ou nao, onde ela eh devedora ou recebedora).
+- Total despesas para cada pessoa:
+    - Somar todas as despesas onde a pessoa esta evolvida.
