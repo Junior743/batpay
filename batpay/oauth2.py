@@ -10,14 +10,14 @@ class OAuth2(object):
     #endregion
 
     #region Constants
-    # TODO: This configurations should are in __init__ file
+    # TODO: This configurations should are in .ini file
     CLIENT_ID = '2IFtKvuwi5MMhHqwCr4rFocDPc4tfoR2pSzXqait'
     CLIENT_SECRET = 'AAzHaABGKBBkGRPMg9jOFqoudLvNPq14GUNLXQMN'
     SCOPES = []
     AUTH_URI = 'https://secure.splitwise.com/oauth/authorize'
     TOKEN_URI = 'https://secure.splitwise.com/oauth/token'
     #endregion
-    
+
     @classmethod
     def authorize(cls):
         '''
@@ -35,6 +35,7 @@ class OAuth2(object):
 #region Decorators
 def view_authenticate(func):
     def func_wrapper(*param):
+        import ipdb; ipdb.set_trace()
         _context = param[0]
         _request = param[1]
         _session = OAuth2.authorize()

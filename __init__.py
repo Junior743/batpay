@@ -2,13 +2,13 @@ from pyramid.config import Configurator
 from wsgiref.simple_server import make_server
 
 # import views
-from views import (
+from batpay.views import (
     ViewAdministrator,
     ViewManager
 )
 
 
-class BatPay(object):
+class Main(object):
     '''
     BAT PAY - Application for management of apportionments.
     '''
@@ -19,15 +19,11 @@ class BatPay(object):
         {"name":"user", "uri":"/users/{code}"}, 
         {"name":"spreadsheets", "uri":"/spreadsheets"}, 
         {"name":"spreadsheet", "uri":"/spreadsheets/{code}"}, 
-        {"name":"reports", "uri":"/reports"}, 
-        {"name":"report", "uri":"/reports/{code}"}, 
-        {"name":"detailed-reports", "uri":"/reports/{code}/detailed-reports"}
+        {"name":"expenses-reports", "uri":"/reports/{code}/expenses-reports"}
     ]
 
     VIEWS = [
-        {"view":ViewAdministrator.extract_reports, "route_name":"reports", "request_method":"GET"}, 
-        {"view":ViewAdministrator.extract_detailed_reports, "route_name":"detailed-reports", "request_method":"GET"}, 
-        {"view":ViewAdministrator.extract_spreadsheets, "route_name":"spreadsheets", "request_method":"GET"}, 
+        {"view":ViewAdministrator.extract_expenses_reports, "route_name":"expenses-reports", "request_method":"GET"}, 
         {"view":ViewManager.add_users, "route_name":"users", "request_method":"POST"}, 
         {"view":ViewManager.update_users, "route_name":"user", "request_method":"PUT"}, 
         {"view":ViewManager.delete_users, "route_name":"user", "request_method":"DELETE"}, 
@@ -63,4 +59,4 @@ class BatPay(object):
 
 
 if __name__ == "__main__":
-    BatPay.servir()
+    Main.servir()
